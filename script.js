@@ -42,11 +42,6 @@ filterButtons.forEach(button => {
     });
 });
 
-/* * IMPORTANT : Les gestionnaires JavaScript qui bloquaient la soumission des formulaires 
- * de Contact et de Newsletter (avec e.preventDefault()) ont été supprimés.
- * Netlify prendra désormais en charge l'envoi de ces formulaires.
- */
-
 
 // Book Now button functionality
 document.querySelectorAll('.car-card .btn').forEach(button => {
@@ -81,7 +76,7 @@ document.querySelectorAll('.car-card .btn').forEach(button => {
             <h2 style="color: var(--primary-color); margin-bottom: 20px;">Book ${carName}</h2>
             <p style="margin-bottom: 20px;">Price: ${carPrice}</p>
             
-            <form id="bookingForm" name="CarReservation" method="POST" data-netlify="true">
+            <form id="bookingForm" name="CarReservation" method="POST" data-netlify="true" action="/success.html">
                 <input type="hidden" name="form-name" value="CarReservation" />
                 <input type="hidden" name="Car_Name" value="${carName}" /> 
                 <input type="hidden" name="Car_Price" value="${carPrice}" /> 
@@ -125,16 +120,7 @@ document.querySelectorAll('.car-card .btn').forEach(button => {
             }
         });
         
-        // La gestionnaire de soumission JS local est supprimé.
-        // Netlify prend en charge la soumission et l'envoi de l'email à l'admin.
-        
-        // On garde un petit gestionnaire pour fermer la modale après la soumission réussie par Netlify
-        document.getElementById('bookingForm').addEventListener('submit', function(e) {
-            // Un petit délai pour simuler un chargement avant que Netlify ne redirige ou soumette.
-            setTimeout(() => {
-                document.body.removeChild(modal);
-                alert(`Réservation pour ${carName} soumise. Vous serez contacté sous peu.`);
-            }, 100);
-        });
+        // ATTENTION : Aucun gestionnaire d'événement 'submit' n'est attaché ici. Netlify gère la soumission via l'attribut 'action="/success.html"'.
+
     });
 });

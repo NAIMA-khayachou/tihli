@@ -919,21 +919,35 @@
       <input type="text" name="Full_Name" />
       <input type="email" name="Email" />
       <input type="tel" name="Phone" />
+      </form>
+   
+    <form id="bookingForm" name="CarReservation" method="POST" data-netlify="true" action="/success.html">
+    </form>
+    <form id="contactForm" name="ContactForm" method="POST" data-netlify="true" action="/success.html">
+      <input type="hidden" name="form-name" value="ContactForm" />
+      <div class="form-group">
+        <input type="text" id="name" placeholder="Your Name" name="name" required>
+      </div>
+      <div class="form-group">
+        <input type="email" id="email" placeholder="Your Email" name="email" required>
+      </div>
+      <div class="form-group">
+        <input type="tel" id="phone" placeholder="Your Phone (Optional)" name="phone">
+      </div>
+      <div class="form-group">
+        <textarea id="message" rows="5" placeholder="Your Message" name="message" required></textarea>
+      </div>
+      <button type="submit" class="btn">Send Message</button>
     </form>
 
-    <form name="ContactForm" netlify hidden>
-     <input type="text" name="form-name" value="ContactForm" />
-     <input type="text" name="name" />
-     <input type="email" name="email" />
-     <input type="tel" name="phone" />
-     <textarea name="message"></textarea>
+
+    <form id="newsletterForm" name="Newsletter" method="POST" data-netlify="true" action="/success.html">
+      <input type="hidden" name="form-name" value="Newsletter" />
+      <div class="form-group">
+        <input type="email" placeholder="Your email" name="email" required>
+      </div>
+      <button type="submit" class="btn">Subscribe</button>
     </form>
-
-   <form name="Newsletter" netlify hidden>
-    <input type="text" name="form-name" value="Newsletter" />
-    <input type="email" name="email" />
-   </form>
-
     <script src="script.js"></script>
 </body>
 </html>
