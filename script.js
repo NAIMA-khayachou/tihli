@@ -42,71 +42,18 @@ filterButtons.forEach(button => {
     });
 });
 
-// Contact form submission
-document.getElementById('contactForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    // Here you would normally send the form data to a server
-    // For this demo, we'll just show a success message
-    const formElements = this.elements;
-    let formData = {};
-    
-    for (let i = 0; i < formElements.length; i++) {
-        if (formElements[i].name) {
-            formData[formElements[i].name] = formElements[i].value;
-        }
-    }
-    
-    // Create success message
-    const successMessage = document.createElement('div');
-    successMessage.style.padding = '15px';
-    successMessage.style.backgroundColor = '#4CAF50';
-    successMessage.style.color = 'white';
-    successMessage.style.marginTop = '20px';
-    successMessage.style.borderRadius = '4px';
-    successMessage.textContent = 'Thank you for your message! We will get back to you soon.';
-    
-    // Add message to the form
-    this.appendChild(successMessage);
-    
-    // Reset form
-    this.reset();
-    
-    // Remove message after 5 seconds
-    setTimeout(() => {
-        successMessage.remove();
-    }, 5000);
-});
+/* * IMPORTANT : Les gestionnaires JavaScript qui bloquaient la soumission des formulaires 
+ * de Contact et de Newsletter (avec e.preventDefault()) ont été supprimés.
+ * Netlify prendra désormais en charge l'envoi de ces formulaires.
+ */
 
-// Newsletter form submission
-document.getElementById('newsletterForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    // Create success message
-    const successMessage = document.createElement('div');
-    successMessage.style.padding = '10px';
-    successMessage.style.backgroundColor = '#4CAF50';
-    successMessage.style.color = 'white';
-    successMessage.style.marginTop = '10px';
-    successMessage.style.borderRadius = '4px';
-    successMessage.textContent = 'Thank you for subscribing!';
-    
-    // Add message to the form
-    this.appendChild(successMessage);
-    
-    // Reset form
-    this.reset();
-    
-    // Remove message after 5 seconds
-    setTimeout(() => {
-        successMessage.remove();
-    }, 5000);
-});
 
 // Book Now button functionality
 document.querySelectorAll('.car-card .btn').forEach(button => {
     button.addEventListener('click', function() {
-        const carName = this.closest('.car-card').querySelector('.car-name').textContent;
-        const carPrice = this.closest('.car-card').querySelector('.car-price').textContent;
+        const carCard = this.closest('.car-card');
+        const carName = carCard.querySelector('.car-name').textContent;
+        const carPrice = carCard.querySelector('.car-price').textContent;
         
         // Create booking modal
         const modal = document.createElement('div');
@@ -133,26 +80,31 @@ document.querySelectorAll('.car-card .btn').forEach(button => {
             <button style="position: absolute; top: 10px; right: 10px; background: none; border: none; color: white; font-size: 24px; cursor: pointer;">&times;</button>
             <h2 style="color: var(--primary-color); margin-bottom: 20px;">Book ${carName}</h2>
             <p style="margin-bottom: 20px;">Price: ${carPrice}</p>
-            <form id="bookingForm">
+            
+            <form id="bookingForm" name="CarReservation" method="POST" data-netlify="true">
+                <input type="hidden" name="form-name" value="CarReservation" />
+                <input type="hidden" name="Car_Name" value="${carName}" /> 
+                <input type="hidden" name="Car_Price" value="${carPrice}" /> 
+                
                 <div class="form-group">
                     <label for="pickup-date">Pickup Date</label>
-                    <input type="date" id="pickup-date" required>
+                    <input type="date" id="pickup-date" name="Pickup_Date" required>
                 </div>
                 <div class="form-group">
                     <label for="return-date">Return Date</label>
-                    <input type="date" id="return-date" required>
+                    <input type="date" id="return-date" name="Return_Date" required>
                 </div>
                 <div class="form-group">
                     <label for="booking-name">Full Name</label>
-                    <input type="text" id="booking-name" required>
+                    <input type="text" id="booking-name" name="Full_Name" required>
                 </div>
                 <div class="form-group">
                     <label for="booking-email">Email</label>
-                    <input type="email" id="booking-email" required>
+                    <input type="email" id="booking-email" name="Email" required>
                 </div>
                 <div class="form-group">
                     <label for="booking-phone">Phone</label>
-                    <input type="tel" id="booking-phone" required>
+                    <input type="tel" id="booking-phone" name="Phone" required>
                 </div>
                 <button type="submit" class="btn">Confirm Booking</button>
             </form>
@@ -173,28 +125,16 @@ document.querySelectorAll('.car-card .btn').forEach(button => {
             }
         });
         
-        // Handle booking form submission
+        // La gestionnaire de soumission JS local est supprimé.
+        // Netlify prend en charge la soumission et l'envoi de l'email à l'admin.
+        
+        // On garde un petit gestionnaire pour fermer la modale après la soumission réussie par Netlify
         document.getElementById('bookingForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Create success message
-            const successMessage = document.createElement('div');
-            successMessage.style.padding = '15px';
-            successMessage.style.backgroundColor = '#4CAF50';
-            successMessage.style.color = 'white';
-            successMessage.style.marginTop = '20px';
-            successMessage.style.borderRadius = '4px';
-            successMessage.style.textAlign = 'center';
-            successMessage.textContent = `Your booking for ${carName} has been confirmed! We will contact you shortly.`;
-            
-            // Replace form with success message
-            modalContent.innerHTML = '';
-            modalContent.appendChild(successMessage);
-            
-            // Close modal after 3 seconds
+            // Un petit délai pour simuler un chargement avant que Netlify ne redirige ou soumette.
             setTimeout(() => {
                 document.body.removeChild(modal);
-            }, 3000);
+                alert(`Réservation pour ${carName} soumise. Vous serez contacté sous peu.`);
+            }, 100);
         });
     });
 });
